@@ -1,0 +1,18 @@
+nav {
+  z-index: 1;
+  background-color: #0b192c;
+  opacity: 0.8;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav h1 {
+  color: #fff;
+  font-size: 40px;
+}
+
+h1 span {
+  color: #7e60bf;
+}
