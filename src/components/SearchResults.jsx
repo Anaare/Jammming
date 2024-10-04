@@ -1,10 +1,10 @@
 import TrackList from "./TrackList";
 import styles from "./SearchResults.module.css";
-function Results() {
+function Results({ tracks }) {
   return (
     <div className={styles.results}>
       <h1>Results</h1>
-      <TrackList />
+      <TrackList tracks={tracks} />
     </div>
   );
 }
