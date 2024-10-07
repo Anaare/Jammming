@@ -1,6 +1,13 @@
 import styles from "./Track.module.css";
 
-function Track({ song, artist, album, selected, onAddToPlaylist }) {
+function Track({ id, song, artist, album, onAddToPlaylist }) {
+  const trackData = {
+    id,
+    song,
+    artist,
+    album,
+  };
+
   return (
     <div className={styles.result}>
       <div className={styles.info}>
@@ -9,10 +16,12 @@ function Track({ song, artist, album, selected, onAddToPlaylist }) {
           {artist} | {album}
         </p>
       </div>
-      <button aria-label={`Add ${song} by ${artist}`} onClick={onAddToPlaylist}>
+      <button
+        aria-label={`Add ${song} by ${artist}`}
+        onClick={() => onAddToPlaylist(trackData)}
+      >
         +
       </button>
-      {/*relies on where it is displayed. in Results +, in Playlist - */}
     </div>
   );
 }

@@ -1,15 +1,5 @@
-import { useState } from "react";
 import Track from "./Track";
-function TrackList({ tracks }) {
-  const [selectedTracks, setSelectedTracks] = useState(false);
-
-  const handleAddToPlaylist = (trackId) => {
-    setSelectedTracks((prevSelected) => ({
-      ...prevSelected,
-      [trackId]: !prevSelected[trackId],
-    }));
-  };
-
+function TrackList({ tracks, onAddToPlaylist }) {
   return (
     <>
       {tracks.map((track) => (
@@ -18,8 +8,8 @@ function TrackList({ tracks }) {
           artist={track.artist}
           album={track.album}
           key={track.id}
-          selected={!selectedTracks[track.id]}
-          onAddToPlaylist={() => handleAddToPlaylist(track.id)}
+          id={track.id}
+          onAddToPlaylist={onAddToPlaylist}
         />
       ))}
     </>

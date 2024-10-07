@@ -1,12 +1,12 @@
 import TrackList from "./TrackList";
 import styles from "./SearchResults.module.css";
-function Results({ tracks }) {
+function SearchResults({ tracks, onAddToPlaylist }) {
   return (
     <div className={styles.results}>
       <h1>Results</h1>
-      <TrackList tracks={tracks} />
+      <TrackList tracks={tracks} onAddToPlaylist={onAddToPlaylist} />
     </div>
   );
 }
 
-export default Results;
+export default SearchResults;
