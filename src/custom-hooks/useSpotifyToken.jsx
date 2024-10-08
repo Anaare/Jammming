@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function GetAccessToken() {
+export function useSpotifyToken() {
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
@@ -28,7 +28,6 @@ export default function GetAccessToken() {
 
         const data = await response.json();
         setAccessToken(data.access_token);
-        console.log("Access Token:", data.access_token);
       } catch (error) {
         console.error("Error getting Spotify access token:", error);
       }
@@ -37,9 +36,5 @@ export default function GetAccessToken() {
     getSpotifyToken();
   }, []);
 
-  return (
-    <>
-      <h1>{accessToken}</h1>
-    </>
-  );
+  return accessToken;
 }

@@ -4,11 +4,12 @@ function TrackList({ tracks, onAddToPlaylist }) {
     <>
       {tracks.map((track) => (
         <Track
-          song={track.song}
+          song={track.name}
           artist={track.artist}
           album={track.album}
           key={track.id}
           id={track.id}
+          uri={track.uri}
           onAddToPlaylist={onAddToPlaylist}
         />
       ))}

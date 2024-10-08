@@ -1,13 +1,7 @@
-import { useState } from "react";
 import styles from "./SearchBar.module.css";
-function SearchBar({ addSearchResults }) {
-  const [track, setTrack] = useState("");
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
+function SearchBar({ track, setTrack, onSearchSubmit }) {
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={onSearchSubmit}>
       <input
         type="text"
         name="search result"
@@ -16,9 +10,7 @@ function SearchBar({ addSearchResults }) {
           setTrack(e.target.value);
         }}
       />
-      <button type="submit" onClick={addSearchResults}>
-        SEARCH
-      </button>
+      <button type="submit">SEARCH</button>
     </form>
   );
 }

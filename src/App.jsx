@@ -2,39 +2,65 @@ import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import Playlist from "./components/Playlist";
 import SearchResults from "./components/SearchResults";
-import { useState } from "react";
-
-const tracks = [
-  {
-    id: 1,
-    song: "I wanna be yours",
-    artist: "Arctic Monkeys",
-    album: "AM",
-    uri: "i",
-  },
-  {
-    id: 2,
-    song: "Do I wanna know",
-    artist: "Arctic Monkeys",
-    album: "AM",
-    uri: "b",
-  },
-  {
-    id: 3,
-    song: "505",
-    artist: "Arctic Monkeys",
-    album: "AM",
-    uri: "c",
-  },
-];
+import { useSpotifyToken } from "./custom-hooks/useSpotifyToken";
+import { useEffect, useState } from "react";
 
 function App() {
+  const token = useSpotifyToken();
+
   const [searchResults, setSearchResults] = useState([]);
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [playlistName, setPlaylistName] = useState("");
+  const [track, setTrack] = useState("");
 
-  const addSearchResults = () => {
-    setSearchResults(tracks);
+  const [searchTriggered, setSearchTriggered] = useState(false);
+
+  useEffect(() => {
+    const getTrackData = async () => {
+      if (!searchTriggered) return;
+      try {
+        const response = await fetch(
+          `https://api.spotify.com/v1/search?q=remaster%2520track%3A${track}&type=track&limit=10`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+
+        const trackInfo = result.tracks.items.map((track) => ({
+          id: track.id,
+          name: track.name,
+          artist: track.artists[0].name,
+          album: track.album.name,
+          uri: track.uri,
+        }));
+
+        setSearchResults(trackInfo);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setSearchTriggered(false);
+        setTrack("");
+      }
+    };
+    getTrackData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [track, searchTriggered]);
+
+  const handleSearch = () => {
+    setSearchTriggered(true);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    handleSearch();
   };
 
   const addToPlaylist = (track) => {
@@ -75,7 +101,11 @@ function App() {
   return (
     <div>
       <NavBar />
-      <SearchBar addSearchResults={addSearchResults} />
+      <SearchBar
+        track={track}
+        setTrack={setTrack}
+        onSearchSubmit={handleSearchSubmit}
+      />
       <div className="container">
         <SearchResults tracks={searchResults} onAddToPlaylist={addToPlaylist} />
         <Playlist
